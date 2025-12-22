@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_textfield.dart';
 import 'package:flutter_restaurant/pages/home_page.dart';
-import 'package:flutter_restaurant/main.dart';
+//import 'package:flutter_restaurant/main.dart';
 
 class LoginPage extends StatefulWidget {
   final void Function()? onTap;

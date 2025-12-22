@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/auth/login_or_register.dart';
 import 'package:flutter_restaurant/firebase_options.dart';
+import 'package:flutter_restaurant/models/restaurant.dart';
+
 import 'package:flutter_restaurant/pages/Delivery_Progress_Page.dart';
 import 'package:flutter_restaurant/pages/payment_page.dart';
 import 'package:flutter_restaurant/themes/theme_provider.dart';
@@ -11,8 +13,13 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        //theme
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        //restaurant
+        ChangeNotifierProvider(create: (context) => Restaurant()),
+      ],
       child: const MyApp(),
     ),
   );
