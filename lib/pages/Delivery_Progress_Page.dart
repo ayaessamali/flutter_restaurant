@@ -31,7 +31,7 @@ class DeliveryProgressPage extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
+              color: Theme.of(context).colorScheme.surface,
               shape: BoxShape.circle,
             ),
             child: IconButton(onPressed: () {}, icon: const Icon(Icons.person)),
@@ -59,7 +59,7 @@ class DeliveryProgressPage extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
@@ -71,7 +71,7 @@ class DeliveryProgressPage extends StatelessWidget {
               const SizedBox(width: 10,),
               Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background,
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(

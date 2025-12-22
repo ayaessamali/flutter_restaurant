@@ -19,10 +19,10 @@ class _LoginPageState extends State<LoginPage> {
 
   //login methode
   void login() {
-    /*
-    fill out authentication here
-     */
-    //navigate to home page
+    
+    // fill out authentication here
+     
+    // navigate to home page
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => const HomePage()),
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

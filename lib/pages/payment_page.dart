@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
@@ -60,7 +59,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,

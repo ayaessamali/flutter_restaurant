@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/auth/login_or_register.dart';
 import 'package:flutter_restaurant/firebase_options.dart';
 import 'package:flutter_restaurant/models/restaurant.dart';
-
 import 'package:flutter_restaurant/pages/Delivery_Progress_Page.dart';
 import 'package:flutter_restaurant/pages/payment_page.dart';
 import 'package:flutter_restaurant/themes/theme_provider.dart';

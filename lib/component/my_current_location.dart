@@ -26,7 +26,7 @@ class MyCurrentLocation extends StatelessWidget {
     );
   }
 
-  Widget build(BuildContext context) {
+  @override Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Column(

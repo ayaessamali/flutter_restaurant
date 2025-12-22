@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyDescriptionBox extends StatelessWidget {
   const MyDescriptionBox({super.key});
 
-  Widget build(BuildContext context) {
+  @override Widget build(BuildContext context) {
     //text style
     var myPrimaryTextStyle = TextStyle(
       color: Theme.of(context).colorScheme.inversePrimary,
