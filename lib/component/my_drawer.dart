@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_drawer_tile.dart';
 import 'package:flutter_restaurant/pages/setting_page.dart';
+import 'package:flutter_restaurant/services/auth/auth_service.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -11,6 +12,11 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   // You can add state variables here if needed
+
+  void logout(){
+    final authService = AuthService();
+    authService.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +55,14 @@ class _MyDrawerState extends State<MyDrawer> {
             },
             text: "S E T T I N G",
           ),
-          Spacer(),
-          MyDrawerTile(icon: Icons.logout, onTap: () {}, text: "L O G O U T"),
+          const Spacer(),
+          MyDrawerTile(icon: Icons.logout, 
+            onTap: () {
+              logout();
+              Navigator.pop(context);
+            }, 
+            text: "L O G O U T"),
+
           const SizedBox(height: 25),
         ],
       ),

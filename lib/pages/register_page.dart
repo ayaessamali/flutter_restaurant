@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_textfield.dart';
+import 'package:flutter_restaurant/services/auth/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -16,13 +17,41 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController confirmpasswordController =
       TextEditingController();
 
-  @override
-  void dispose() {
-    // Dispose controllers to prevent memory leaks
-    emailCon.dispose();
-    passwordController.dispose();
-    super.dispose();
+  void register() async{
+    // get auth service
+    final _authService = AuthService();
+
+    // check if passwords match -> create user
+    if(passwordController.text == confirmpasswordController.text){
+      // create user
+      try {
+      await _authService.signUpWithEmailPassword(
+        emailController.text , 
+        passwordController.text,
+        );
+      }
+   
+    // diplay any error
+      catch (e){
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(e.toString()),
+          ),
+        );
+     }  
+    }
+    // display error if passwords dont match
+    else{
+      showDialog(
+        context: context,
+        builder: (context) => const AlertDialog(
+          title: Text("Passwords do not match"),
+        ),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {

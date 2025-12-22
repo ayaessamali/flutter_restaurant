@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_textfield.dart';
-import 'package:flutter_restaurant/pages/home_page.dart';
+//import 'package:flutter_restaurant/pages/home_page.dart';
+import 'package:flutter_restaurant/services/auth/auth_service.dart';
 //import 'package:flutter_restaurant/main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,22 +21,35 @@ class _LoginPageState extends State<LoginPage> {
   //login methode
   void login() {
     
-    // fill out authentication here
-     
-    // navigate to home page
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const HomePage()),
-    // );
-  }
+    // get instance of auth service
+    final _authService = AuthService();
 
-  @override
-  void dispose() {
-    // Dispose controllers to prevent memory leaks
-    emailCon.dispose();
-    passwordController.dispose();
-    super.dispose();
+    // try sign in
+    try{
+      await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
+    }
+
+    // display any error
+    catch (e){
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
+        ),
+      );
+    }
   }
+  // forgot password
+  void forgotPw() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title:const Text("Password reset email sent! Check your inbox."),
+      ),
+    );
+  }
+  
 
   @override
   Widget build(BuildContext context) {
