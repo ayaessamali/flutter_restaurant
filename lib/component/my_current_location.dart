@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/models/restaurant.dart';
+import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatelessWidget {
   const MyCurrentLocation({super.key});
@@ -8,7 +10,7 @@ class MyCurrentLocation extends StatelessWidget {
       builder: (context) => AlertDialog(
         title: const Text("Your Location"),
         content: const TextField(
-          decoration: InputDecoration(hintText: "search address..."),
+          decoration: InputDecoration(hintText: "Enter address..."),
         ),
         actions: [
           //cancle button
@@ -18,7 +20,13 @@ class MyCurrentLocation extends StatelessWidget {
           ),
           //save button
           MaterialButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              // update delivery address 
+              String newAddress = textController.text;
+              context.read<Restaurant>().updateDeliveryAddress(newAddress);
+               Navigator.pop(context);
+               textController.clear();
+               },
             child: Text("Save"),
           ),
         ],
@@ -41,12 +49,14 @@ class MyCurrentLocation extends StatelessWidget {
             child: Row(
               children: [
                 //address
-                Text(
-                  "6901 Holywood Blv",
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Consumer<Restaurant>(
+                  builder: (context, restaurant, child) => Text(
+                      restaurant.deliveryAddress,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                    );
                 ),
 
                 //drop down mnue

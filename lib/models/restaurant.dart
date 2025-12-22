@@ -338,16 +338,66 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
   ];
+   
+   // user cart
+  final List<CartItem> _cart = [];
+
+  //delivery address which user can change/update
+  String _deliveryAddress = "6901 Holywood Blv";
+
 
   //getters
   List<Food> get menu => _menu;
   List<CartItem> get cartItems => _cart;
 
   //operations
+  
   //1-add to cart
+  void addToCart(Food food, List<Addon> selectedAddons) {
+    CartItem? cartItem = _cart.firstWhereOrNull((item) {
+
+          bool isSameFood = item.food == food;
+
+          bool isSameAddons = ListEquality().equals(item.selectedAddons, selectedAddons);
+
+          return isSameFood && isSameAddons;
+        });
+    if (cartItem != null) {
+      cartItem.quantity++;}
+    else {
+      _cart.add(CartItem(food: food, selectedAddons: selectedAddons, quantity: 1));
+    }
+  }
+
   //2-remove from cart
+  void removeFromCart(CartItem cartItem) {
+   int cartIndex = _cart.indexOf(cartItem);
+   if (cartIndex != -1) {
+     if (_cart[cartIndex].quantity > 1) {
+       _cart[cartIndex].quantity--;
+     } else {
+       _cart.removeAt(cartIndex);
+     }
+   }
+   notifyListeners();
+  }
   //3-get total price
+  double getTotalPrice() {
+    double total = 0.0;
+    for (var item in _cart) {
+      double addonsTotal = item.selectedAddons.fold(0.0, (sum, addon) => sum + addon.price);
+      total += (item.food.price + addonsTotal) * item.quantity;
+    }
+    return total;
+  }
   //4-get total number of items in cart
+  int getTotalItemCount() {
+    int itemCount = 0;
+    for (var item in _cart) {
+      itemCount += item.quantity;
+    }
+    return itemCount;
+  }
   //5-clear cart
   //user cart
   final List<CartItem> _cart = [];
@@ -460,4 +510,9 @@ class Restaurant extends ChangeNotifier {
   }
 
   //format list of addons into string summary
+  String _formatAddons(List<Addon> addons) {
+    if (addons.isEmpty) return "No addons";
+    return addons.map((addon) => "${addon.name} (${_formatPrice(addon.price)})").join(", ");
+  }
+
 }
