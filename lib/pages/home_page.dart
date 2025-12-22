@@ -8,6 +8,7 @@ import 'package:flutter_restaurant/component/my_food_tile.dart';
 import 'package:flutter_restaurant/component/my_sliver_app_bar.dart';
 import 'package:flutter_restaurant/models/food.dart';
 import 'package:flutter_restaurant/models/restaurant.dart';
+import 'package:flutter_restaurant/pages/food_page.dart';
 import 'package:flutter_restaurant/pages/my_tab_bar.dart';
 import 'package:provider/provider.dart';
 //import 'package:provider/provider.dart';
@@ -54,7 +55,13 @@ class _HomePageState extends State<HomePage>
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           final food = categoryMenu[index];
-          return FoodTile(food: food, onTap: () {}); // ListTile
+          return FoodTile(
+            food: food,
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FoodPage(food: food)),
+            ),
+          ); // ListTile
         },
       ); // ListView.builder
     }).toList();
