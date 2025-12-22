@@ -25,7 +25,7 @@ class MyReceipt extends StatelessWidget {
               padding: const EdgeInsets.all(25),
               child: Consumer<Restaurant>(
                 builder: (context, value, child) =>
-                    Text(restaurant.displayCartReceipt()),
+                    Text(value.displayCartReceipt()),
               ),
             ),
             const SizedBox(height: 25,),

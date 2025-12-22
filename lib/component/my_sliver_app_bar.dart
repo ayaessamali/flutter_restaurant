@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_restaurant/pages/cart_page.dart';
 
 class MySliverAppBar extends StatefulWidget {
   final Widget child;
@@ -19,7 +20,19 @@ class _MySliverAppBarState extends State<MySliverAppBar> {
       pinned: true,
       actions: [
         //create button
-        IconButton(onPressed: () {}, icon: const Icon(Icons.shopping_cart)),
+        IconButton(
+          onPressed: () {
+            onPressed:
+            () {
+              //go to cart page
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CartPage()),
+              );
+            };
+          },
+          icon: const Icon(Icons.shopping_cart),
+        ),
       ],
       backgroundColor: Theme.of(context).colorScheme.surface,
       foregroundColor: Theme.of(context).colorScheme.inversePrimary,
