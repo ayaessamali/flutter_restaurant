@@ -22,17 +22,13 @@ class _MySliverAppBarState extends State<MySliverAppBar> {
         //create button
         IconButton(
           onPressed: () {
-            onPressed:
-            () {
-              //go to cart page
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CartPage()),
-              );
-            };
+          Navigator.push(
+            context,
+          MaterialPageRoute(builder: (context) => const CartPage()),
+          );
           },
-          icon: const Icon(Icons.shopping_cart),
-        ),
+        icon: const Icon(Icons.shopping_cart),
+ ),
       ],
       backgroundColor: Theme.of(context).colorScheme.surface,
       foregroundColor: Theme.of(context).colorScheme.inversePrimary,

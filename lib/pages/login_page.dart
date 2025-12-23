@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_textfield.dart';
-//import 'package:flutter_restaurant/pages/home_page.dart';
+import 'package:flutter_restaurant/pages/home_page.dart';
 import 'package:flutter_restaurant/services/auth/auth_service.dart';
 //import 'package:flutter_restaurant/main.dart';
 
@@ -15,30 +15,34 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // Controllers must be here in the State
-  final TextEditingController emailCon = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   //login methode
-  void login() {
-    
-    // get instance of auth service
-    final _authService = AuthService();
+  void login() async {
+  final _authService = AuthService();
 
-    // try sign in
-    try{
-      await _authService.signInWithEmailPassword(emailController.text, passwordController.text);
-    }
+  try {
+    await _authService.signInWithEmailPassword(
+      emailController.text,
+      passwordController.text,
+    );
 
-    // display any error
-    catch (e){
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(e.toString()),
-        ),
-      );
-    }
+    // Redirect فورًا بعد نجاح تسجيل الدخول
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const HomePage()),
+    );
+
+  } catch (e) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(e.toString()),
+      ),
+    );
   }
+}
   // forgot password
   void forgotPw() {
     showDialog(
@@ -78,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
 
           // Email text field
           MyTextfield(
-            controller: emailCon,
+            controller: emailController,
             hintText: 'Email',
             obscureText: false,
           ),

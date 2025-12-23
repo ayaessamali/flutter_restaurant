@@ -3,46 +3,36 @@ import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_cart_tile.dart';
 import 'package:flutter_restaurant/models/restaurant.dart';
 import 'package:provider/provider.dart';
+import 'payment_page.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<Restaurant>(
-      builder: (context, restaurant, child) {
-        //cart
-        final userCart = restaurant.cartItems;
-        //scaffold ui
+      builder: (context, restaurant, _) {
+        final userCart = restaurant.cart;
+
         return Scaffold(
           appBar: AppBar(
-            //appbar
             title: const Text("Cart"),
             backgroundColor: Colors.transparent,
             foregroundColor: Theme.of(context).colorScheme.inversePrimary,
             actions: [
-              // clear cart button
               IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
                   showDialog(
                     context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text(
-                        "Are you sure you want to clear the cart?",
-                      ),
+                    builder: (_) => AlertDialog(
+                      title: const Text("Clear cart?"),
                       actions: [
-                        //cancel button
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text("Cancel"),
-                        ),
-                        //yes button
+                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
-
                             restaurant.clearCart();
+                            Navigator.pop(context);
                           },
                           child: const Text("Yes"),
                         ),
@@ -55,41 +45,23 @@ class CartPage extends StatefulWidget {
           ),
           body: Column(
             children: [
-              //list of cart
               Expanded(
-                child: Column(
-                  children: [
-                    userCart.isEmpty
-                        ? const Expanded(
-                            child: Center(child: Text("Cart is empty..")),
-                          )
-                        : Expanded(
-                            child: ListView.builder(
-                              itemCount: userCart.length,
-                              itemBuilder: (context, index) {
-                                //get individual cart item
-                                final cartItem = userCart[index];
-                                //return cart title ui
-                                return MyCartTile(cartItem: cartItem);
-                              },
-                            ),
-                          ),
-                  ],
-                ),
+                child: userCart.isEmpty
+                    ? const Center(child: Text("Cart is empty"))
+                    : ListView.builder(
+                        itemCount: userCart.length,
+                        itemBuilder: (context, index) => MyCartTile(cartItem: userCart[index]),
+                      ),
               ),
-              //button to pay
-              MyButton(onTap: () {}, text: "Go to Check out"),
+              MyButton(
+                text: "Go to Checkout",
+                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PaymentPage())),
+              ),
               const SizedBox(height: 25),
             ],
           ),
         );
       },
     );
-  }
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
   }
 }

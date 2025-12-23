@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_drawer_tile.dart';
 import 'package:flutter_restaurant/pages/setting_page.dart';
 import 'package:flutter_restaurant/services/auth/auth_service.dart';
+import 'package:flutter_restaurant/auth/login_or_register.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -11,11 +12,18 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  // You can add state variables here if needed
-
-  void logout(){
+  void logout() async {
     final authService = AuthService();
-    authService.signOut();
+    await authService.signOut();
+
+    // بعد logout، نرجع لشاشة LoginOrRegister ونمسح كل الصفحات السابقة
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginOrRegister()),
+        (route) => false,
+      );
+    }
   }
 
   @override
@@ -32,18 +40,15 @@ class _MyDrawerState extends State<MyDrawer> {
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Divider(color: Theme.of(context).colorScheme.secondary),
           ),
-
           MyDrawerTile(
             icon: Icons.home,
             onTap: () => Navigator.pop(context),
             text: "H O M E",
           ),
-
           MyDrawerTile(
             icon: Icons.settings,
             onTap: () {
@@ -56,21 +61,14 @@ class _MyDrawerState extends State<MyDrawer> {
             text: "S E T T I N G",
           ),
           const Spacer(),
-          MyDrawerTile(icon: Icons.logout, 
-            onTap: () {
-              logout();
-              Navigator.pop(context);
-            }, 
-            text: "L O G O U T"),
-
+          MyDrawerTile(
+            icon: Icons.logout,
+            onTap: logout,
+            text: "L O G O U T",
+          ),
           const SizedBox(height: 25),
         ],
       ),
     );
   }
 }
-/*
-Navigator.of(context, rootNavigator: true).push(
-  MaterialPageRoute(builder: (context) => const SettingPage()),
-);
- */

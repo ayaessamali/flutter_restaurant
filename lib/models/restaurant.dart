@@ -338,69 +338,21 @@ class Restaurant extends ChangeNotifier {
       ],
     ),
   ];
-   
-   // user cart
+
+  //user cart
   final List<CartItem> _cart = [];
 
   //delivery address which user can change/update
-  String _deliveryAddress = "6901 Holywood Blv";
+  String _deliveryAddress = '6901 Holywood Blv';
 
 
   //getters
   List<Food> get menu => _menu;
-  List<CartItem> get cartItems => _cart;
+  List<CartItem> get cart => _cart;
+  String get deliveryAddress => _deliveryAddress;
 
-  //operations
   
-  //1-add to cart
-  void addToCart(Food food, List<Addon> selectedAddons) {
-    CartItem? cartItem = _cart.firstWhereOrNull((item) {
-
-          bool isSameFood = item.food == food;
-
-          bool isSameAddons = ListEquality().equals(item.selectedAddons, selectedAddons);
-
-          return isSameFood && isSameAddons;
-        });
-    if (cartItem != null) {
-      cartItem.quantity++;}
-    else {
-      _cart.add(CartItem(food: food, selectedAddons: selectedAddons, quantity: 1));
-    }
-  }
-
-  //2-remove from cart
-  void removeFromCart(CartItem cartItem) {
-   int cartIndex = _cart.indexOf(cartItem);
-   if (cartIndex != -1) {
-     if (_cart[cartIndex].quantity > 1) {
-       _cart[cartIndex].quantity--;
-     } else {
-       _cart.removeAt(cartIndex);
-     }
-   }
-   notifyListeners();
-  }
-  //3-get total price
-  double getTotalPrice() {
-    double total = 0.0;
-    for (var item in _cart) {
-      double addonsTotal = item.selectedAddons.fold(0.0, (sum, addon) => sum + addon.price);
-      total += (item.food.price + addonsTotal) * item.quantity;
-    }
-    return total;
-  }
-  //4-get total number of items in cart
-  int getTotalItemCount() {
-    int itemCount = 0;
-    for (var item in _cart) {
-      itemCount += item.quantity;
-    }
-    return itemCount;
-  }
-  //5-clear cart
-  //user cart
-  final List<CartItem> _cart = [];
+  
   //add to cart
   void addToCart(Food food, List<Addon> selectedAddons) {
     //see it there is a cart item with same food and selected addons
@@ -465,6 +417,11 @@ class Restaurant extends ChangeNotifier {
     _cart.clear();
     notifyListeners();
   }
+  //update delivery address
+  void updateDeliveryAddress(String newAddress) {
+    _deliveryAddress = newAddress;
+    notifyListeners();
+  }
 
   // generate a receipt
   String displayCartReceipt() {
@@ -494,19 +451,14 @@ class Restaurant extends ChangeNotifier {
     receipt.writeln();
     receipt.writeln("Total Items: ${getTotalItemCount()}");
     receipt.writeln("Total Price: ${_formatPrice(getTotalPrice())}");
+    receipt.writeln();
+    receipt.writeln("delivery to: $_deliveryAddress");
     return receipt.toString();
   }
 
   // format double value into money
   String _formatPrice(double price) {
     return "\$${price.toStringAsFixed(2)}";
-  }
-
-  // format list of addons into a string summary
-  String _formatAddons(List<Addon> addons) {
-    return addons
-        .map((addon) => "${addon.name} (${_formatPrice(addon.price)})")
-        .join(", ");
   }
 
   //format list of addons into string summary

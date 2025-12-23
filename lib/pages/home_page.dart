@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_current_location.dart';
 import 'package:flutter_restaurant/component/my_description_box.dart';
@@ -11,7 +9,6 @@ import 'package:flutter_restaurant/models/restaurant.dart';
 import 'package:flutter_restaurant/pages/food_page.dart';
 import 'package:flutter_restaurant/pages/my_tab_bar.dart';
 import 'package:provider/provider.dart';
-//import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +19,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  //tab_bar controller
   late TabController _tabController;
 
   @override
@@ -40,12 +36,10 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  // sort out and return a list of food items that belong to a specific category
   List<Food> _filterMenuByCategory(FoodCategory category, List<Food> fullMenu) {
     return fullMenu.where((food) => food.category == category).toList();
   }
 
-  // return list of foods in given category
   List<Widget> getFoodInThisCategory(List<Food> fullMenu) {
     return FoodCategory.values.map((category) {
       List<Food> categoryMenu = _filterMenuByCategory(category, fullMenu);
@@ -61,19 +55,15 @@ class _HomePageState extends State<HomePage>
               context,
               MaterialPageRoute(builder: (context) => FoodPage(food: food)),
             ),
-          ); // ListTile
+          );
         },
-      ); // ListView.builder
+      );
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(b
-      //   title: Text("Home"),
-      //   backgroundColor: Theme.of(context).colorScheme.background,
-      // ),
       drawer: MyDrawer(),
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
@@ -81,25 +71,22 @@ class _HomePageState extends State<HomePage>
             title: MyTabBar(tabController: _tabController),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: const [
                 Divider(
                   indent: 25,
                   endIndent: 25,
-                  color: Theme.of(context).colorScheme.secondary,
+                  color: Colors.grey,
                 ),
-                //my current location
-                const MyCurrentLocation(),
-
-                //description box
-                const MyDescriptionBox(),
+                MyCurrentLocation(),
+                MyDescriptionBox(),
               ],
             ),
           ),
         ],
         body: Consumer<Restaurant>(
-          builder: (context, Restaurant, child) => TabBarView(
+          builder: (context, restaurant, child) => TabBarView(
             controller: _tabController,
-            children: getFoodInThisCategory(Restaurant.menu),
+            children: getFoodInThisCategory(restaurant.menu),
           ),
         ),
       ),

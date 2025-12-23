@@ -4,37 +4,50 @@ import 'package:provider/provider.dart';
 
 class MyCurrentLocation extends StatelessWidget {
   const MyCurrentLocation({super.key});
+
   void openLocationSearchBox(BuildContext context) {
+    // controller صح
+    final TextEditingController addressController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text("Your Location"),
-        content: const TextField(
-          decoration: InputDecoration(hintText: "Enter address..."),
+        content: TextField(
+          controller: addressController,
+          decoration: const InputDecoration(
+            hintText: "Enter address...",
+          ),
         ),
         actions: [
-          //cancle button
+          // cancel button
           MaterialButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
+            child: const Text("Cancel"),
           ),
-          //save button
+
+          // save button
           MaterialButton(
             onPressed: () {
-              // update delivery address 
-              String newAddress = textController.text;
-              context.read<Restaurant>().updateDeliveryAddress(newAddress);
-               Navigator.pop(context);
-               textController.clear();
-               },
-            child: Text("Save"),
+              // update delivery address
+              String newAddress = addressController.text;
+
+              context
+                  .read<Restaurant>()
+                  .updateDeliveryAddress(newAddress);
+
+              Navigator.pop(context);
+              addressController.clear();
+            },
+            child: const Text("Save"),
           ),
         ],
       ),
     );
   }
 
-  @override Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(25.0),
       child: Column(
@@ -48,19 +61,20 @@ class MyCurrentLocation extends StatelessWidget {
             onTap: () => openLocationSearchBox(context),
             child: Row(
               children: [
-                //address
+                // address
                 Consumer<Restaurant>(
                   builder: (context, restaurant, child) => Text(
-                      restaurant.deliveryAddress,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                      ),
-                    );
+                    restaurant.deliveryAddress,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color:
+                          Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
                 ),
 
-                //drop down mnue
-                Icon(Icons.keyboard_arrow_down_rounded),
+                // drop down menu
+                const Icon(Icons.keyboard_arrow_down_rounded),
               ],
             ),
           ),

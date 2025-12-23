@@ -1,8 +1,7 @@
-import 'dart:math';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
-import 'package:flutter_restaurant/pages/Delivery_Progress_Page.dart';
+import 'delivery_progress_page.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key});
@@ -19,67 +18,25 @@ class _PaymentPageState extends State<PaymentPage> {
   String cvvCode = '';
   bool isCvvFocused = false;
 
-  //user wants to pay
-  void userTappedPay() {
+  void payNow() {
     if (formKey.currentState!.validate()) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text("Confirm Payment"),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: [
-                Text("Card Number: $cardNumber"),
-                Text("Expiry Date: $expiryDate)"),
-                Text("Card Holder name: $cardHolderName"),
-                Text("CVV: $cvvCode"),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child:const Text("Cancel"),
-            ),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context, 
-                MaterialPageRoute(
-                  builder: (context) => DeliveryProgressPage()
-                  ),
-              ),
-              child:const Text("Yes"),
-            ),
-          ],
-        ),
-      );
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const DeliveryProgressPage()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Checkout"),
-      ),
+      appBar: AppBar(title: const Text("Checkout"), backgroundColor: Colors.transparent, foregroundColor: Theme.of(context).colorScheme.inversePrimary),
       body: Column(
         children: [
-          CreditCardWidget(
-            cardNumber: cardNumber,
-            expiryDate: expiryDate,
-            cardHolderName: cardHolderName,
-            cvvCode: cvvCode,
-            showBackView: isCvvFocused,
-            onCreditCardWidgetChange: (p0) {},
-          ),
+          CreditCardWidget(cardNumber: cardNumber, expiryDate: expiryDate, cardHolderName: cardHolderName, cvvCode: cvvCode, showBackView: isCvvFocused, onCreditCardWidgetChange: (_) {}),
           CreditCardForm(
             cardNumber: cardNumber,
             expiryDate: expiryDate,
             cardHolderName: cardHolderName,
             cvvCode: cvvCode,
+            formKey: formKey,
             onCreditCardModelChange: (data) {
               setState(() {
                 cardNumber = data.cardNumber;
@@ -88,13 +45,9 @@ class _PaymentPageState extends State<PaymentPage> {
                 cvvCode = data.cvvCode;
               });
             },
-            formKey: formKey,
           ),
           const Spacer(),
-          MyButton(
-            text: "Pay now",
-             onTap: userTappedPay
-             ),
+          MyButton(text: "Pay now", onTap: payNow),
           const SizedBox(height: 25),
         ],
       ),

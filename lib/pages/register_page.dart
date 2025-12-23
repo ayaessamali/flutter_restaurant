@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_restaurant/component/my_button.dart';
 import 'package:flutter_restaurant/component/my_textfield.dart';
 import 'package:flutter_restaurant/services/auth/auth_service.dart';
+import 'package:flutter_restaurant/pages/home_page.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -12,46 +13,52 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController emailCon = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpasswordController =
       TextEditingController();
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    confirmpasswordController.dispose();
+    super.dispose();
+ }
+    
 
-  void register() async{
-    // get auth service
-    final _authService = AuthService();
+ void register() async {
+  final _authService = AuthService();
 
-    // check if passwords match -> create user
-    if(passwordController.text == confirmpasswordController.text){
-      // create user
-      try {
+  if (passwordController.text == confirmpasswordController.text) {
+    try {
       await _authService.signUpWithEmailPassword(
-        emailController.text , 
+        emailController.text,
         passwordController.text,
-        );
-      }
-   
-    // diplay any error
-      catch (e){
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(e.toString()),
-          ),
-        );
-     }  
-    }
-    // display error if passwords dont match
-    else{
+      );
+
+      // Redirect فورًا بعد نجاح التسجيل
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const HomePage()),
+      );
+
+    } catch (e) {
       showDialog(
         context: context,
-        builder: (context) => const AlertDialog(
-          title: Text("Passwords do not match"),
+        builder: (context) => AlertDialog(
+          title: Text(e.toString()),
         ),
       );
     }
+  } else {
+    showDialog(
+      context: context,
+      builder: (context) => const AlertDialog(
+        title: Text("Passwords do not match"),
+      ),
+    );
   }
-
+}
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
           // Email text field
           MyTextfield(
-            controller: emailCon,
+            controller: emailController,
             hintText: 'Email',
             obscureText: false,
           ),
@@ -103,7 +110,8 @@ class _RegisterPageState extends State<RegisterPage> {
           const SizedBox(height: 10),
 
           // Sign uo button
-          MyButton(text: "Sign Up", onTap: () {}),
+          MyButton(text: "Sign Up", onTap: () => register(),
+),
 
           const SizedBox(height: 25),
 
